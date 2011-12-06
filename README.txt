@@ -1,5 +1,6 @@
 -- Intro
-drupalwiki_ct enables you to
+Ctools currently does not allow you to run a ctoosl command just directly ( e.g. on a specific page ), you have to call an ajax request + json result to actually acomplish that.
+drupalwiki_ct deals with that issue and enables you to
  - run any ctools commands on the current page rendered ( drupalwiki_ct_add_command )
  - run any ctools commands on the next page loaded, e.g. after a redirect or goto. ( drupalwiki_ct_nr_add_command )
  - open dialogs / modal / ajax on the current page / next page automatically
