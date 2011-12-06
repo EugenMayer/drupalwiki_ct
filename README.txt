@@ -29,7 +29,7 @@ drupalwiki_ct_nr_init_dialog();
 // finally the command. As its part of the extended api, we need to include it
 ctools_include('dialog','drupalwiki_ct');
 // be aware, that we leave nojs in place
-$command = drupalwiki_ct_dialog_open_command('/some/nojs/dialog/path');
+$command = drupalwiki_ct_command_dialog_open('/some/nojs/dialog/path');
 // Thats the way we add any commands to the next request
 drupalwiki_ct_nr_add_command($command);
 
