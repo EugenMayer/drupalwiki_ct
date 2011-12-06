@@ -31,7 +31,6 @@ function drupalwiki_ct_preprocess_page(&$variables) {
 
   // finally all commands
   foreach(drupalwiki_ct_nr_get_commands(TRUE) as $command) {
-    dsm($command);
     drupalwiki_ct_add_command($command);
   }
 }
@@ -127,7 +126,7 @@ function drupalwiki_ct_nr_get_commands($flush = FALSE) {
   }
   return $result;
 }
-
+/*
 function drupalwiki_ct_menu() {
   return array(
     'ctt' => array(
@@ -147,5 +146,5 @@ function _drupalwiki_ct_test() {
 
   // Thats the way we add any commands to the next request
   drupalwiki_ct_nr_add_command($command);
-  drupal_goto('dws/administer/systemroles');
-}
+  drupal_goto('/');
+}*/
