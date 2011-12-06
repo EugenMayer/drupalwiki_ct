@@ -1,0 +1,151 @@
+<?php
+require_once 'drupalwiki_ct.api.inc';
+
+function drupalwiki_ct_preprocess_page(&$variables) {
+  // in any case, add our new ctools commands
+  ctools_add_js('drupalwiki_ct_commands','drupalwiki_ct');
+
+  // all includes first
+  foreach(drupalwiki_ct_nr_get_includes(TRUE) as $meta) {
+    ctools_include($meta['filename'], $meta['module'],$meta['dir']);
+  }
+  // add all the css files
+  foreach(drupalwiki_ct_nr_get_css(TRUE) as $meta) {
+    ctools_add_js($meta['filename'], $meta['module'],$meta['dir']);
+  }
+
+  // add all js libs, which have
+  foreach(drupalwiki_ct_nr_get_js(TRUE) as  $meta) {
+    ctools_add_js($meta['filename'], $meta['module'],$meta['dir']);
+  }
+
+  // init all js / css includes for dialog
+  if(drupalwiki_ct_nr_get_init_dialog(TRUE) && module_exists('dialog')) {
+    dialog_add_js();
+  }
+
+  // init all js / css includes for modal
+  if(drupalwiki_ct_nr_get_init_modal(TRUE)) {
+    ctools_modal_add_js();
+  }
+
+  // finally all commands
+  foreach(drupalwiki_ct_nr_get_commands(TRUE) as $command) {
+    dsm($command);
+    drupalwiki_ct_add_command($command);
+  }
+}
+
+/**
+ * @param bool $flush flushes the list of files to be added
+ * @return array
+ */
+function drupalwiki_ct_nr_get_includes($flush = FALSE) {
+  if(empty($_SESSION['drupalwiki_ct']['nr']['includes'])) {
+    $_SESSION['drupalwiki_ct']['nr']['includes'] = array();
+  }
+
+  $result = $_SESSION['drupalwiki_ct']['nr']['includes'];
+  if($flush) {
+    unset($_SESSION['drupalwiki_ct']['nr']['includes']);
+  }
+  return $result;
+}
+
+/**
+ * @param bool $flush flushes the list of files to be added
+ * @return array
+ */
+function drupalwiki_ct_nr_get_css($flush = FALSE) {
+  if(empty($_SESSION['drupalwiki_ct']['nr']['css'])) {
+    $_SESSION['drupalwiki_ct']['nr']['css'] = array();
+  }
+  $result = $_SESSION['drupalwiki_ct']['nr']['css'];
+  if($flush) {
+    $_SESSION['drupalwiki_ct']['nr']['css'] = array();
+  }
+  return $result;
+}
+
+/**
+ * @param bool $flush flushes the list of files to be added
+ * @return array
+ */
+function drupalwiki_ct_nr_get_js($flush = FALSE) {
+  if(empty($_SESSION['drupalwiki_ct']['nr']['js'])) {
+    $_SESSION['drupalwiki_ct']['nr']['js'] = array();
+  }
+  $result = $_SESSION['drupalwiki_ct']['nr']['js'];
+  if($flush) {
+    $_SESSION['drupalwiki_ct']['nr']['js'] = array();
+  }
+  return $result;
+}
+
+
+/**
+ * @param bool $flush flushes the list of files to be added
+ * @return array
+ */
+function drupalwiki_ct_nr_get_init_dialog($flush = FALSE) {
+  if(empty($_SESSION['drupalwiki_ct']['nr']['init_dialog'])) {
+    $_SESSION['drupalwiki_ct']['nr']['init_dialog'] = FALSE;
+  }
+  $result = $_SESSION['drupalwiki_ct']['nr']['init_dialog'];
+  if($flush) {
+    $_SESSION['drupalwiki_ct']['nr']['init_dialog'] = FALSE;
+  }
+  return $result;
+}
+
+/**
+ * @param bool $flush flushes the list of files to be added
+ * @return array
+ */
+function drupalwiki_ct_nr_get_init_modal($flush = FALSE) {
+  if(empty($_SESSION['drupalwiki_ct']['nr']['init_modal'])) {
+    $_SESSION['drupalwiki_ct']['nr']['init_modal'] = FALSE;
+  }
+  $result = $_SESSION['drupalwiki_ct']['nr']['init_modal'];
+  if($flush) {
+    $_SESSION['drupalwiki_ct']['nr']['init_modal'] = FALSE;
+  }
+  return $result;
+}
+
+/**
+ * @param bool $flush flushes the list of files to be added
+ * @return array
+ */
+function drupalwiki_ct_nr_get_commands($flush = FALSE) {
+  if(empty($_SESSION['drupalwiki_ct']['nr']['commands'])) {
+    $_SESSION['drupalwiki_ct']['nr']['commands'] = array();
+  }
+  $result = $_SESSION['drupalwiki_ct']['nr']['commands'];
+  if($flush) {
+    $_SESSION['drupalwiki_ct']['nr']['commands'] = array();
+  }
+  return $result;
+}
+
+function drupalwiki_ct_menu() {
+  return array(
+    'ctt' => array(
+      'title' => 'text',
+      'page callback' => '_drupalwiki_ct_test',
+      'page arguments' => array(1),
+      'access arguments' => array('a permission which will never exists and can therefor only be passed by the superadmin'),
+      'type' => MENU_CALLBACK,
+    ),
+  );
+}
+
+function _drupalwiki_ct_test() {
+  // we need this for the command
+  ctools_include('ajax');
+  $command = ctools_ajax_command_after('#header','<div>TESSSSST</div>');
+
+  // Thats the way we add any commands to the next request
+  drupalwiki_ct_nr_add_command($command);
+  drupal_goto('dws/administer/systemroles');
+}
