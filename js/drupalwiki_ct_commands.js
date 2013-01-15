@@ -8,6 +8,7 @@ Drupal.CTools.AJAX.commands.ct_ajax = function (data) {
   Drupal.CTools.AJAX.clickAJAXLink.apply($('<a href="' + path + '">dummy</a>')).click();
 };
 
+//ajax submission
 (function ($) {
   Drupal.CTools.AJAX.clickAJAXSubmitButton = function () {
     if ($(this).hasClass('ctools-ajaxing')) {
@@ -16,6 +17,8 @@ Drupal.CTools.AJAX.commands.ct_ajax = function (data) {
 
     // Put our button in.
     this.form.clk = this;
+    //use data-url attribute to get the target for backend
+    //callback
     var url = $(this).attr('data-url');
     $(this).addClass('ctools-ajaxing');
     try {
