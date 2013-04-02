@@ -56,5 +56,3 @@ Drupal.CTools.AJAX.commands.ct_ajax = function (data) {
     obj.attach();
   };
 })(jQuery);
-
-
