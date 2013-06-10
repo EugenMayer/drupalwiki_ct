@@ -1,10 +1,12 @@
 <?php
 require_once 'drupalwiki_ct.api.inc';
 
-function drupalwiki_ct_preprocess_page(&$variables) {
+function drupalwiki_ct_init() {
   // in any case, add our new ctools commands
   ctools_add_js('drupalwiki_ct_commands','drupalwiki_ct');
+}
 
+function drupalwiki_ct_preprocess_page(&$variables) {
   // all includes first
   foreach(drupalwiki_ct_nr_get_includes(TRUE) as $meta) {
     ctools_include($meta['filename'], $meta['module'],$meta['dir']);
@@ -17,16 +19,6 @@ function drupalwiki_ct_preprocess_page(&$variables) {
   // add all js libs, which have
   foreach(drupalwiki_ct_nr_get_js(TRUE) as  $meta) {
     ctools_add_js($meta['filename'], $meta['module'],$meta['dir']);
-  }
-
-  // init all js / css includes for dialog
-  if(drupalwiki_ct_nr_get_init_dialog(TRUE) && module_exists('dialog')) {
-    dialog_add_js();
-  }
-
-  // init all js / css includes for modal
-  if(drupalwiki_ct_nr_get_init_modal(TRUE)) {
-    ctools_modal_add_js();
   }
 
   // finally all commands
